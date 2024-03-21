@@ -1,0 +1,10 @@
+//Wyświetl wszystkie produkty
+http://localhost:8080/api/products
+
+//Wyświetl produkt o id
+http://localhost:8080/api/products/{id}
+
+//Wyświetl wszystkie produkty z kategorii
+http://localhost:8080/api/products/category/{category}
+
+
