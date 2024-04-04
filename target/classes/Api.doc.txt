@@ -7,4 +7,14 @@ http://localhost:8080/api/products/{id}
 //Wyświetl wszystkie produkty z kategorii
 http://localhost:8080/api/products/category/{category}
 
+//Wyświetl wszystkie produkty z kategorii o id i ilości produktów na stronie
+http://localhost:8080/api/products/search/findByCategoryId?id=2&page=0&size=2
 
+
+#TODO
+//Wyświetl wszystkie produkty z nazwą
+http://localhost:8080/api/products/search/findByNameContaining?name=Kawa
+
+#TODO
+//Wyświetl wszystkie produkty z ceną
+http://localhost:8080/api/products/search/findByPrice?price=10
