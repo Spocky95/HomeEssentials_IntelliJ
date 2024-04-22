@@ -10,11 +10,19 @@ http://localhost:8080/api/products/category/{category}
 //Wyświetl wszystkie produkty z kategorii o id i ilości produktów na stronie
 http://localhost:8080/api/products/search/findByCategoryId?id=2&page=0&size=2
 
+//Wyświetl wszystkie produkty o nazwie
+http://localhost:8080/api/products/search/findByNameContaining?name=Spring
 
-#TODO
-//Wyświetl wszystkie produkty z nazwą
-http://localhost:8080/api/products/search/findByNameContaining?name=Kawa
+//Wyświetl wszystkie kraje
+http://localhost:8080/api/countries
+
+//Wyświetl wszystkie kraje z id 1
+http://localhost:8080/api/countries/1
+
+//Wyświetl wszystkie stany za pomocą kodu kraju
+http://localhost:8080/api/states/search/findByCountryCode?code=DE
 
 #TODO
 //Wyświetl wszystkie produkty z ceną
 http://localhost:8080/api/products/search/findByPrice?price=10
+

@@ -1,0 +1,28 @@
+Sekcja DAO (Data Access Object) w projekcie jest odpowiedzialna za dostęp do danych.
+W kontekście Spring Boot i JPA, DAO zazwyczaj zawiera interfejsy,
+które rozszerzają JpaRepository lub inne repozytoria Spring Data JPA.
+Te interfejsy umożliwiają wykonywanie operacji CRUD (Create, Read, Update, Delete)
+na encjach bez konieczności pisania szczegółowego kodu SQL.
+
+Na przykład, w Twoim projekcie masz `CountryRepository` i `ProductRepository`, które są częścią warstwy DAO.
+Oba te repozytoria rozszerzają `JpaRepository`, co oznacza, że dostarczają metody do operacji takich jak zapisywanie,
+wyszukiwanie, aktualizowanie i usuwanie encji `Country` i `Product`.
+
+`CountryRepository`:
+
+```java
+public interface CountryRepository extends JpaRepository<Country, Integer> {
+}
+```
+
+`ProductRepository`:
+
+```java
+public interface ProductRepository extends JpaRepository<Product, Long>{
+    Page<Product>  findByCategoryId(@Param("id") Long id, Pageable pageable);
+    Page<Product> findByNameContaining(@Param("name") String name, Pageable pageable);
+}
+```
+
+W `ProductRepository` masz również dodatkowe metody do wyszukiwania produktów na podstawie kategorii i nazwy,
+co pokazuje, że repozytoria Spring Data JPA mogą również zawierać niestandardowe metody wyszukiwania.
