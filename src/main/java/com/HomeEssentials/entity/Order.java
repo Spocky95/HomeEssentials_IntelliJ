@@ -1,5 +1,6 @@
 package com.HomeEssentials.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +49,7 @@ public class Order {
 
         @ManyToOne
         @JoinColumn(name = "customer_id")
+        @JsonIgnore//to avoid infinite recursion
         private Customer customer;
 
         @OneToOne(cascade = CascadeType.ALL)
