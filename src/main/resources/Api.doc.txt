@@ -22,6 +22,9 @@ http://localhost:8080/api/countries/1
 //Wyświetl wszystkie stany za pomocą kodu kraju
 http://localhost:8080/api/states/search/findByCountryCode?code=DE
 
+//Wyświetl wszystkie zamówienia wykonane za pomocą tego emaila
+http://localhost:8080/api/orders/search/findByCustomerEmail?email=asdasd@test.com
+
 #TODO
 //Wyświetl wszystkie produkty z ceną
 http://localhost:8080/api/products/search/findByPrice?price=10

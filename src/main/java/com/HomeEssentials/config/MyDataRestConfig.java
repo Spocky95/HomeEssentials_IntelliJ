@@ -1,9 +1,6 @@
 package com.HomeEssentials.config;
 
-import com.HomeEssentials.entity.Country;
-import com.HomeEssentials.entity.Product;
-import com.HomeEssentials.entity.ProductCategory;
-import com.HomeEssentials.entity.State;
+import com.HomeEssentials.entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +47,11 @@ public class MyDataRestConfig  implements RepositoryRestConfigurer {
         disableHttpMethods(Country.class,config, theUnsupportedActions);
         disableHttpMethods(State.class,config, theUnsupportedActions);
 
+        disableHttpMethods(Order.class,config, theUnsupportedActions);
 
 
-        //
+
+        // call an internal helper method
         exposeIds(config);
 
         //config.getCorsRegistry().addMapping("/**").allowedOrigins("http://localhost:4200");
