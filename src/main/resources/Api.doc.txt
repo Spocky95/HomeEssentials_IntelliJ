@@ -28,6 +28,9 @@ http://localhost:8080/api/orders/search/findByCustomerEmail?email=asdasd@test.co
 //Wyświetl wszystkie zamówienia wykonane za pomocą tego emaila > Aktualnie powinno oddać "401 Unauthorized"
 http://localhost:8080/api/orders/search/findByCustomerEmail?email=asdasd@test.com
 
+//Implementacja SSL na porcie 4090
+https://localhost:4090/api/products
+
 #TODO
 //Wyświetl wszystkie produkty z ceną
 http://localhost:8080/api/products/search/findByPrice?price=10
