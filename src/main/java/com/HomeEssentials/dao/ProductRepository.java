@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 // Interfejs ProductRepository rozszerza JpaRepository, co umożliwia korzystanie z gotowych metod do operacji CRUD.
 
 @RepositoryRestResource
+@CrossOrigin("https://localhost:4200")
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
 

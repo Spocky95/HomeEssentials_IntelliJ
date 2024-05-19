@@ -23,7 +23,6 @@ public class MyDataRestConfig  implements RepositoryRestConfigurer {
 
     @Value("${allowed.origins}")
     private String[] theAllowedOrigins;
-
     private EntityManager entityManager;
 
     @Autowired
