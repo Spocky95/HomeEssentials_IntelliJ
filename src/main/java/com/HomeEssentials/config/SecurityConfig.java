@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
@@ -16,9 +14,12 @@ import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain configureSecurityFilters(HttpSecurity http) throws Exception {
 
-        // protect endpoint /api/orders
+        configureCors(http);
+        configureCsrf(http);
+        configureOkta(http);
+
         http.authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers("/api/orders/**")
@@ -26,10 +27,7 @@ public class SecurityConfig {
                 .oauth2ResourceServer()
                 .jwt();
 
-        // add CORS filters
-        http.cors();
 
-        // add content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class,
                 new HeaderContentNegotiationStrategy());
 
@@ -37,8 +35,31 @@ public class SecurityConfig {
         Okta.configureResourceServer401ResponseBody(http);
 
         // disable CSRF since we are not using Cookies for session tracking
-        http.csrf().disable();
 
         return http.build();
     }
+
+    private void configureOkta(HttpSecurity http) {
+        try {
+            Okta.configureResourceServer401ResponseBody(http);
+        } catch (Exception e) {
+            System.err.println("Wystąpił błąd podczas konfigurowania Okta: " + e.getMessage());
+        }
     }
+
+    private void configureCors(HttpSecurity http) {
+        try {
+            http.cors();
+        } catch (Exception e) {
+            System.err.println("Wystąpił błąd podczas konfigurowania CORS: " + e.getMessage());
+        }
+    }
+
+    private void configureCsrf(HttpSecurity http) {
+        try {
+            http.csrf().disable();
+        } catch (Exception e) {
+            System.err.println("Wystąpił błąd podczas konfigurowania CSRF: " + e.getMessage());
+        }
+    }
+}

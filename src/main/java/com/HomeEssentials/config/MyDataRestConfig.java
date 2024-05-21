@@ -14,71 +14,57 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 // Klasa MyDataRestConfig implementuje interfejs RepositoryRestConfigurer, który umożliwia dostosowanie konfiguracji Spring Data REST.
 @Configuration
 public class MyDataRestConfig  implements RepositoryRestConfigurer {
 
-    @Value("${allowed.origins}")
-    private String[] theAllowedOrigins;
-    private EntityManager entityManager;
+    private final List<String> corsAllowedOrigins;
+    private final EntityManager entityManager;
 
     @Autowired
-    public MyDataRestConfig(EntityManager theEntityManager) {
+    public MyDataRestConfig(EntityManager theEntityManager, @Value("${allowed.origins}") List<String> corsAllowedOrigins) {
         entityManager = theEntityManager;
+        this.corsAllowedOrigins = corsAllowedOrigins;
     }
 
     @Override
-    // Metoda configureRepositoryRestConfiguration jest używana do konfiguracji CORS dla repozytoriów Spring Data REST.
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         RepositoryRestConfigurer.super.configureRepositoryRestConfiguration(config, cors);
 
-        HttpMethod[] theUnsupportedActions = {  HttpMethod.PUT,
-                                                HttpMethod.POST,
-                                                HttpMethod.DELETE,
-                                                HttpMethod.PATCH};
+        List<HttpMethod> unsupportedHttpMethods = List.of(HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH);
 
-        // Wyłączenie metod PUT, POST i DELETE dla wszystkich klas encji.
-        disableHttpMethods(Product.class,config, theUnsupportedActions);
-        disableHttpMethods(ProductCategory.class,config, theUnsupportedActions);
-        disableHttpMethods(Country.class,config, theUnsupportedActions);
-        disableHttpMethods(State.class,config, theUnsupportedActions);
+        disableHttpMethods(Product.class,config, unsupportedHttpMethods);
+        disableHttpMethods(ProductCategory.class,config, unsupportedHttpMethods);
+        disableHttpMethods(Country.class,config, unsupportedHttpMethods);
+        disableHttpMethods(State.class,config, unsupportedHttpMethods);
+        disableHttpMethods(Order.class,config, unsupportedHttpMethods);
 
-        disableHttpMethods(Order.class,config, theUnsupportedActions);
-
-
-
-        // call an internal helper method
         exposeIds(config);
 
-        //config.getCorsRegistry().addMapping("/**").allowedOrigins("http://localhost:4200");
-//        cors.addMapping(config.getBasePath() + "/**").allowedOrigins("http://localhost:4200");
-        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(corsAllowedOrigins.toArray(String[]::new));
     }
 
-    private static void disableHttpMethods(Class classAttribute, RepositoryRestConfiguration config, HttpMethod[] theUnsupportedActions) {
+    private void disableHttpMethods(Class classAttribute, RepositoryRestConfiguration config, List<HttpMethod> unsupportedHttpMethods) {
+        HttpMethod[] methodsArray = unsupportedHttpMethods.toArray(new HttpMethod[0]);
+
         config.getExposureConfiguration()
                 .forDomainType(classAttribute)
-                .withItemExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
-                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
+                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(methodsArray))
+                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(methodsArray));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
-
-
         Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
 
-        List<Class> entityClasses = new ArrayList<>();
+        List<Class> entityClasses = entities.stream()
+                .map(EntityType::getJavaType)
+                .collect(Collectors.toList());
 
-        for (EntityType tempEntityType : entities) {
-            entityClasses.add(tempEntityType.getJavaType());
-        }
-
-        Class[] domainTypes = entityClasses.toArray(new Class[0]);
-        config.exposeIdsFor(domainTypes);
-
-        
+        config.exposeIdsFor(entityClasses.toArray(Class[]::new));
     }
 }
