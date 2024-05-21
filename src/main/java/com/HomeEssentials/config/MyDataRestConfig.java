@@ -36,7 +36,7 @@ public class MyDataRestConfig  implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         RepositoryRestConfigurer.super.configureRepositoryRestConfiguration(config, cors);
 
-        List<HttpMethod> unsupportedHttpMethods = Arrays.asList(HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH);
+        List<HttpMethod> unsupportedHttpMethods = List.of(HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH);
 
         disableHttpMethods(Product.class,config, unsupportedHttpMethods);
         disableHttpMethods(ProductCategory.class,config, unsupportedHttpMethods);
@@ -46,12 +46,11 @@ public class MyDataRestConfig  implements RepositoryRestConfigurer {
 
         exposeIds(config);
 
-        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(corsAllowedOrigins.toArray(new String[0]));
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(corsAllowedOrigins.toArray(String[]::new));
     }
 
     private void disableHttpMethods(Class classAttribute, RepositoryRestConfiguration config, List<HttpMethod> unsupportedHttpMethods) {
-        HttpMethod[] methodsArray = new HttpMethod[unsupportedHttpMethods.size()];
-        unsupportedHttpMethods.toArray(methodsArray);
+        HttpMethod[] methodsArray = unsupportedHttpMethods.toArray(new HttpMethod[0]);
 
         config.getExposureConfiguration()
                 .forDomainType(classAttribute)
@@ -66,6 +65,6 @@ public class MyDataRestConfig  implements RepositoryRestConfigurer {
                 .map(EntityType::getJavaType)
                 .collect(Collectors.toList());
 
-        config.exposeIdsFor(entityClasses.toArray(new Class[0]));
+        config.exposeIdsFor(entityClasses.toArray(Class[]::new));
     }
 }
