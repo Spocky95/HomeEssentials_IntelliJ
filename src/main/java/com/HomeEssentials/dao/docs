@@ -4,9 +4,7 @@ które rozszerzają JpaRepository lub inne repozytoria Spring Data JPA.
 Te interfejsy umożliwiają wykonywanie operacji CRUD (Create, Read, Update, Delete)
 na encjach bez konieczności pisania szczegółowego kodu SQL.
 
-Na przykład, w Twoim projekcie masz `CountryRepository` i `ProductRepository`, które są częścią warstwy DAO.
-Oba te repozytoria rozszerzają `JpaRepository`, co oznacza, że dostarczają metody do operacji takich jak zapisywanie,
-wyszukiwanie, aktualizowanie i usuwanie encji `Country` i `Product`.
+
 
 `CountryRepository`:
 

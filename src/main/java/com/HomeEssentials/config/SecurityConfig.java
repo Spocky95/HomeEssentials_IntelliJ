@@ -27,14 +27,11 @@ public class SecurityConfig {
                 .oauth2ResourceServer()
                 .jwt();
 
-
         http.setSharedObject(ContentNegotiationStrategy.class,
                 new HeaderContentNegotiationStrategy());
 
         // force a non-empty response body for 401's to make the response more friendly
         Okta.configureResourceServer401ResponseBody(http);
-
-        // disable CSRF since we are not using Cookies for session tracking
 
         return http.build();
     }
@@ -63,3 +60,5 @@ public class SecurityConfig {
         }
     }
 }
+
+//zrefaktorowane
