@@ -68,3 +68,4 @@ public class MyDataRestConfig  implements RepositoryRestConfigurer {
         config.exposeIdsFor(entityClasses.toArray(Class[]::new));
     }
 }
+//zrefaktorowane

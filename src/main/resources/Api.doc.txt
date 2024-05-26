@@ -15,6 +15,7 @@ http://localhost:8080/api/products/search/findByNameContaining?name=Spring
 
 //Wyświetl wszystkie kraje
 http://localhost:8080/api/countries
+https://localhost:4090/api/products/search/findByNameContaining?name=
 
 //Wyświetl wszystkie kraje z id 1
 http://localhost:8080/api/countries/1
@@ -30,6 +31,11 @@ http://localhost:8080/api/orders/search/findByCustomerEmail?email=asdasd@test.co
 
 //Implementacja SSL na porcie 4090
 https://localhost:4090/api/products
+
+//Wyświetl wszystkie produkty o nazwie
+https://localhost:4090/api/products/search/findByNameContaining?name=
+
+https://localhost:4090/api/products/search/findByNameContaining?name=
 
 #TODO
 //Wyświetl wszystkie produkty z ceną
